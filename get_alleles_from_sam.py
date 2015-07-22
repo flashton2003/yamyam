@@ -8,7 +8,7 @@ from collections import OrderedDict
 from cProfile import run
 from pstats import Stats
 
-USE_CHASTITY = True
+USE_CHASTITY = False
 
 ### cat sd_0001_PAO1_5k.sam | python get_alleles_from_sam.py sample_name positions.txt vcf_file
 
@@ -72,7 +72,7 @@ def write_alleles():
 	chastity_list = []
 	gaps = 0
 	#indel_positions = [(position.CHROM, position.POS - 1) for position 
-#			   in list(vcf.Reader(open(sys.argv[3], 'r'))) if position.is_indel]
+	#			   in list(vcf.Reader(open(sys.argv[3], 'r'))) if position.is_indel]
 	indel_positions = []
 	for chrom in positions.keys():
 		for pos in sorted(positions[chrom]):
@@ -122,6 +122,7 @@ def write_alleles():
 	id = sample_name
 	with open(sys.argv[4], 'w') as file_out:
 		print >>file_out, '>%s_new\n%s\n' %(id, frag),
+
 
 if __name__ == '__main__':
 	#run('write_alleles()', 'stats')
