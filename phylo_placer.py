@@ -1,4 +1,5 @@
 import argparse
+import os
 from align_fastqs import align_fastqs
 from __init__ import __version__, Package
 

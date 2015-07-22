@@ -1,6 +1,6 @@
 
 
 
-def align_fastqs():
+def align_fastqs(args):
 	
 	pass
