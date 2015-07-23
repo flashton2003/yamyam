@@ -14,4 +14,6 @@ class Package:
 		for f in os.listdir(path_to_package):
 			if f.endswith(('.fa', '.fasta', '.fna')):
 				self.ref_genome = os.path.join(path_to_package, f)
+			if f.endswith('var_list'):
+				self.var_list = os.path.join(path_to_package, f)
 		pass

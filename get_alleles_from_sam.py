@@ -36,7 +36,7 @@ def init_array(refs):
 		array[ref] = numpy.zeros((4, max(positions[ref]) + 1), dtype=int)
 	return array, positions
 
-def read_sam_ill():
+def read_sam():
 	base_dict = {'A':0, 'C':1, 'G':2, 'T':3}
 	alignment = pysam.Samfile('-', 'r')
 	array, positions = init_array(alignment.references)
@@ -44,59 +44,30 @@ def read_sam_ill():
 		# ignore any unmapped reads
 		if line.is_unmapped: continue
 		# ignore any reads with indels
-		if len([op for op, length in line.cigar if op != 0]):
+		#if len([op for op, length in line.cigar if op != 0]):
 			#check for isec first then check length of indel?
-			#increment A for ref and T for indel so correct string is generated
-			#print line.seq
-			#print line.cigar
-			continue
+		#print line.seq
+		#print line.cigar
 		chrom = alignment.getrname(line.tid)
 		read_positions = set(xrange(line.pos, line.aend))
 		try:
-			isec = positions[chrom].intersection(read_positions)
+			isecs = positions[chrom].intersection(read_positions)
 		except KeyError:
 			continue
-		if isec:
-			overlap = [(pos, line.seq[pos-line.pos]) for pos in isec]
+		if isecs:
+			#print 'isecs', isecs
+			#overlap = [(pos, line.seq[pos-line.pos]) for pos in isec]
 			#quality = [(pos, ord(line.qual[pos-line.pos])-33) for pos in isec]
-			if overlap:
-				for each in overlap:
-					if each[1] != 'N':
-						array[chrom][(base_dict[each[1]], each[0])] += 1
-	return array, positions
-
-def read_sam_nano():
-	base_dict = {'A':0, 'C':1, 'G':2, 'T':3}
-	alignment = pysam.Samfile('-', 'r')
-	array, positions = init_array(alignment.references)
-	for line in alignment:
-		# ignore any unmapped reads
-		if line.is_unmapped: continue
-		# ignore any reads with indels
-		chrom = alignment.getrname(line.tid)
-		read_positions = set(xrange(line.pos, line.aend))
-		#print line.query_name, line.pos, line.aend, line.get_reference_positions()[0], line.get_reference_positions()[-1]
-		#print len(read_positions)
-		#print len(line.get_reference_positions())
-			
-		try:
-			isec = positions[chrom].intersection(read_positions)
-		except KeyError:
-			continue
-		if isec:
-			aligned_pairs = line.get_aligned_pairs()
-			print isec
-			print line.pos
-			overlap = [(pos, line.seq[pos-line.pos]) for pos in isec]
-			#quality = [(pos, ord(line.qual[pos-line.pos])-33) for pos in isec]
-			if overlap:
-				for each in overlap:
-					aligned_pairs = line.get_aligned_pairs()
-					for x, y in aligned_pairs:
-						if y == each[0]:
-							print 
-							#if each[1] != 'N':
-								#array[chrom][(base_dict[each[1]], each[0])] += 1
+			#if overlap:
+			for isec in isecs:
+				for aligned_pair in line.get_aligned_pairs():
+					if aligned_pair[1] == isec:
+						if aligned_pair[0]:
+							#print aligned_pair, isec
+							#print 'pair', read_base, base_dict[read_base], isec
+							read_base = line.seq[aligned_pair[0]]
+							if read_base != 'N':
+								array[chrom][(base_dict[read_base], isec)] += 1
 	return array, positions
 
 def write_alleles(array, positions):
@@ -165,8 +136,7 @@ if __name__ == '__main__':
 	if seq_tech == 'illumina':
 		array, positions = read_sam_ill()
 	elif seq_tech == 'nanopore':
-		array, positions = read_sam_nano()
-	
+		array, positions = read_sam_nano()	
 	write_alleles(array, positions)
 
 
