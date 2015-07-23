@@ -73,21 +73,30 @@ def read_sam_nano():
 		# ignore any unmapped reads
 		if line.is_unmapped: continue
 		# ignore any reads with indels
-		print line.get_reference_positions()
-
 		chrom = alignment.getrname(line.tid)
 		read_positions = set(xrange(line.pos, line.aend))
+		#print line.query_name, line.pos, line.aend, line.get_reference_positions()[0], line.get_reference_positions()[-1]
+		#print len(read_positions)
+		#print len(line.get_reference_positions())
+			
 		try:
 			isec = positions[chrom].intersection(read_positions)
 		except KeyError:
 			continue
 		if isec:
+			aligned_pairs = line.get_aligned_pairs()
+			print isec
+			print line.pos
 			overlap = [(pos, line.seq[pos-line.pos]) for pos in isec]
 			#quality = [(pos, ord(line.qual[pos-line.pos])-33) for pos in isec]
 			if overlap:
 				for each in overlap:
-					if each[1] != 'N':
-						array[chrom][(base_dict[each[1]], each[0])] += 1
+					aligned_pairs = line.get_aligned_pairs()
+					for x, y in aligned_pairs:
+						if y == each[0]:
+							print 
+							#if each[1] != 'N':
+								#array[chrom][(base_dict[each[1]], each[0])] += 1
 	return array, positions
 
 def write_alleles(array, positions):
