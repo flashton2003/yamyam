@@ -10,8 +10,14 @@ def align_fastqs(args, package):
 
 def parse_sam(args, package):
 	this_dir = os.path.dirname(os.path.realpath(__file__))
-	os.system('cat {0}/{1}.sam | python {2}/get_alleles_from_sam.py {3} {4} blah.vcf {5}/{6}.fa {7}'.format(args.output_dir, args.sample_name, this_dir, package.var_list, args.output_dir, args.sample_name, args.seq_tech))
+	os.system('cat {0}/{1}.sam | python {2}/get_alleles_from_sam.py {3} {4} blah.vcf {5}/{6}.fa'.format(args.output_dir, args.sample_name, this_dir, package.var_list, args.output_dir, args.sample_name))
 
 def run_taxit(args, package):
 	now = str(datetime.datetime.now())
 	os.system('taxit create --stats-type FastTree -s {0} -f {1} -l genome -t {2} -P {3}/taxit'.format(package.fasttree_log, package.variant_fasta, package.fasttree_tree, args.output_dir))
+
+def run_pplacer(args, package):
+	add_one_in = os.path.splitext(package.variant_fasta)[0] + 'add_one_in'
+	os.system('cat {0}/{1}.fa {2} > {0}/taxit/{3}.fa'.format(args.output_dir, args.sample_name, package.variant_fasta, add_one_in))
+	os.system('pplacer -c {0}/taxit {0}/taxit/{1}.fa'.format(args.output_dir, add_one_in))
+	pass
