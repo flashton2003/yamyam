@@ -65,9 +65,9 @@ def read_sam():
 						array[chrom][(base_dict[each[1]], each[0])] += 1
 	return array, positions
 
-def write_alleles():
+def write_alleles(array, positions):
 	sample_name = sys.argv[1]
-	array, positions = read_sam()
+	
 	frag = ''
 	chastity_list = []
 	gaps = 0
@@ -127,4 +127,8 @@ def write_alleles():
 if __name__ == '__main__':
 	#run('write_alleles()', 'stats')
 	#stats = Stats('stats')
-	write_alleles()
+	array, positions = read_sam()
+	write_alleles(array, positions)
+
+
+
