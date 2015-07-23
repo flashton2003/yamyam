@@ -1,4 +1,4 @@
-
+import os
 
 
 def align_fastqs(args, package):
