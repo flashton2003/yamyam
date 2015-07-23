@@ -9,12 +9,9 @@ def run_command(args):
     if args.command == 'place_me':
         # align_fastqs(args, package)
         # parse_sam(args, package)
-<<<<<<< HEAD
         run_taxit(args, package)
-=======
-	run_taxit(args, package)
-	run_pplacer(args, package)
->>>>>>> 78a79dc65ff3e8411e938a9fa0a81bfed53b93fc
+	    run_pplacer(args, package)
+        run_guppy(args, package)
 
 def main():
     parser = argparse.ArgumentParser(prog='phylo-placer')

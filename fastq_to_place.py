@@ -19,7 +19,8 @@ def run_taxit(args, package):
 def run_pplacer(args, package):
 	add_one_in = os.path.splitext(package.variant_fasta.split('/')[-1])[0] + 'add_one_in'
 	os.system('cat {0}/{1}.fa {2} > {0}/taxit/{3}.fa'.format(args.output_dir, args.sample_name, package.variant_fasta, add_one_in))
-	os.system('pplacer -c {0}/taxit {0}/taxit/{1}.fa'.format(args.output_dir, add_one_in))
+	os.system('pplacer -c {0}/taxit --out-dir {0}/taxit {0}/taxit/{1}.fa'.format(args.output_dir, add_one_in))
 
 def run_guppy(args, package):
+	os.system('guppy tog {0}/taxit/{1}.jplace')
 	
