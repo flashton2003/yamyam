@@ -17,7 +17,6 @@ def run_taxit(args, package):
 	os.system('taxit create --stats-type FastTree -s {0} -f {1} -l genome -t {2} -P {3}/taxit'.format(package.fasttree_log, package.variant_fasta, package.fasttree_tree, args.output_dir))
 
 def run_pplacer(args, package):
-	add_one_in = os.path.splitext(package.variant_fasta)[0] + 'add_one_in'
+	add_one_in = os.path.splitext(package.variant_fasta)[0] + '.add_one_in'
 	os.system('cat {0}/{1}.fa {2} > {0}/taxit/{3}.fa'.format(args.output_dir, args.sample_name, package.variant_fasta, add_one_in))
 	os.system('pplacer -c {0}/taxit {0}/taxit/{1}.fa'.format(args.output_dir, add_one_in))
-	pass
