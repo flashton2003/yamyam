@@ -1,6 +1,6 @@
 import argparse
 import os
-from fastq_to_place import align_fastqs, parse_sam
+from fastq_to_place import align_fastqs, parse_sam, run_taxit
 from __init__ import __version__, Package
 
 def run_command(args):
@@ -8,7 +8,8 @@ def run_command(args):
     args.sample_name = args.fastq1.split('.')[0]
     if args.command == 'place_me':
         # align_fastqs(args, package)
-        parse_sam(args, package)
+        # parse_sam(args, package)
+	run_taxit(args, package)
 
 def main():
     parser = argparse.ArgumentParser(prog='phylo-placer')
