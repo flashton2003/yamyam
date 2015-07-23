@@ -130,14 +130,11 @@ def write_alleles(array, positions):
 
 
 if __name__ == '__main__':
-	#run('write_alleles()', 'stats')
+	array, positions = read_sam()
+	run('write_alleles(array, positions)', 'stats')
 	#stats = Stats('stats')
-	seq_tech = sys.argv[5]
-	if seq_tech == 'illumina':
-		array, positions = read_sam_ill()
-	elif seq_tech == 'nanopore':
-		array, positions = read_sam_nano()	
-	write_alleles(array, positions)
+	#array, positions = read_sam()
+	#write_alleles(array, positions)
 
 
 
