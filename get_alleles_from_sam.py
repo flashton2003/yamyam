@@ -36,7 +36,7 @@ def init_array(refs):
 		array[ref] = numpy.zeros((4, max(positions[ref]) + 1), dtype=int)
 	return array, positions
 
-def read_sam():
+def read_sam_ill():
 	base_dict = {'A':0, 'C':1, 'G':2, 'T':3}
 	alignment = pysam.Samfile('-', 'r')
 	array, positions = init_array(alignment.references)
@@ -50,6 +50,31 @@ def read_sam():
 			#print line.seq
 			#print line.cigar
 			continue
+		chrom = alignment.getrname(line.tid)
+		read_positions = set(xrange(line.pos, line.aend))
+		try:
+			isec = positions[chrom].intersection(read_positions)
+		except KeyError:
+			continue
+		if isec:
+			overlap = [(pos, line.seq[pos-line.pos]) for pos in isec]
+			#quality = [(pos, ord(line.qual[pos-line.pos])-33) for pos in isec]
+			if overlap:
+				for each in overlap:
+					if each[1] != 'N':
+						array[chrom][(base_dict[each[1]], each[0])] += 1
+	return array, positions
+
+def read_sam_nano():
+	base_dict = {'A':0, 'C':1, 'G':2, 'T':3}
+	alignment = pysam.Samfile('-', 'r')
+	array, positions = init_array(alignment.references)
+	for line in alignment:
+		# ignore any unmapped reads
+		if line.is_unmapped: continue
+		# ignore any reads with indels
+		print line.get_reference_positions()
+
 		chrom = alignment.getrname(line.tid)
 		read_positions = set(xrange(line.pos, line.aend))
 		try:
@@ -127,7 +152,12 @@ def write_alleles(array, positions):
 if __name__ == '__main__':
 	#run('write_alleles()', 'stats')
 	#stats = Stats('stats')
-	array, positions = read_sam()
+	seq_tech = sys.argv[5]
+	if seq_tech == 'illumina':
+		array, positions = read_sam_ill()
+	elif seq_tech == 'nanopore':
+		array, positions = read_sam_nano()
+	
 	write_alleles(array, positions)
 
 
