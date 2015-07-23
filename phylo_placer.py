@@ -1,12 +1,13 @@
 import argparse
 import os
-from align_fastqs import align_fastqs
+from align_fastqs import align_fastqs, parse_sam
 from __init__ import __version__, Package
 
 def run_command(args):
     package = Package(args.place_me_package)
     if args.command == 'place_me':
-        align_fastqs(args, package)
+        # align_fastqs(args, package)
+        parse_sam(args)
 
 def main():
     parser = argparse.ArgumentParser(prog='phylo-placer')
@@ -22,6 +23,7 @@ def main():
     parser_place_me.add_argument('-2', dest='fastq2', help='second fastq file', default = None)
     parser_place_me.add_argument('-p', dest='place_me_package', required=True,
                                     help='The path to a place me package')
+    parser_place_me.add_argument('-t', dest='seq_tech', help='sequencing tech <illumina> or <nanopore>', required = True)
     args = parser.parse_args()
     run_command(args)
 
