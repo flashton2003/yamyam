@@ -14,4 +14,4 @@ def parse_sam(args, package):
 
 def run_taxit(args, package):
 	now = str(datetime.datetime.now())
-	os.sytem('taxit create --stats-type FastTree -s {0} -f {1} -l genome -t {2} -P {3}/taxit'.format(package.fasttree_log, package.variant_fasta, package.fasttree_tree, args.output_dir))
+	os.system('taxit create --stats-type FastTree -s {0} -f {1} -l genome -t {2} -P {3}/taxit'.format(package.fasttree_log, package.variant_fasta, package.fasttree_tree, args.output_dir))
