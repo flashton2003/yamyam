@@ -12,6 +12,8 @@ USE_CHASTITY = False
 
 ### cat sd_0001_PAO1_5k.sam | python get_alleles_from_sam.py sample_name positions.txt vcf_file
 
+def 
+
 def read_positions(positions_txt):
 	# all positions are 0-based (Pythonic)
 	positions = OrderedDict()
@@ -42,12 +44,8 @@ def read_sam():
 	array, positions = init_array(alignment.references)
 	for line in alignment:
 		# ignore any unmapped reads
-		if line.is_unmapped: continue
-		# ignore any reads with indels
-		#if len([op for op, length in line.cigar if op != 0]):
-			#check for isec first then check length of indel?
-		#print line.seq
-		#print line.cigar
+		if line.is_unmapped:
+			continue
 		chrom = alignment.getrname(line.tid)
 		read_positions = set(xrange(line.pos, line.aend))
 		try:
@@ -55,19 +53,14 @@ def read_sam():
 		except KeyError:
 			continue
 		if isecs:
-			#print 'isecs', isecs
 			#overlap = [(pos, line.seq[pos-line.pos]) for pos in isec]
 			#quality = [(pos, ord(line.qual[pos-line.pos])-33) for pos in isec]
-			#if overlap:
+			aligned_pairs = dict((ref, query) for (query, ref) in line.get_aligned_pairs())
 			for isec in isecs:
-				for aligned_pair in line.get_aligned_pairs():
-					if aligned_pair[1] == isec:
-						if aligned_pair[0]:
-							#print aligned_pair, isec
-							#print 'pair', read_base, base_dict[read_base], isec
-							read_base = line.seq[aligned_pair[0]]
-							if read_base != 'N':
-								array[chrom][(base_dict[read_base], isec)] += 1
+				if aligned_pairs[isec]:
+					read_base = line.seq[aligned_pairs[isec]]
+					if read_base != 'N':
+							array[chrom][(base_dict[read_base], isec)] += 1
 	return array, positions
 
 def write_alleles(array, positions):
@@ -130,11 +123,11 @@ def write_alleles(array, positions):
 
 
 if __name__ == '__main__':
+	
 	array, positions = read_sam()
-	run('write_alleles(array, positions)', 'stats')
+	# run('write_alleles(array, positions)', 'stats')
 	#stats = Stats('stats')
-	#array, positions = read_sam()
-	#write_alleles(array, positions)
+	write_alleles(array, positions)
 
 
 
