@@ -12,7 +12,11 @@ USE_CHASTITY = False
 
 ### cat sd_0001_PAO1_5k.sam | python get_alleles_from_sam.py sample_name positions.txt vcf_file
 
-def 
+def get_args():
+	if len(sys.argv) != 4:
+		print 'incorrect number of args, useage is get_alleles_from_sam.py <sample_name> <positions.txt> <output_file>'
+	else:
+		return sys.argv[1], sys.argv[2], sys.argv[3]
 
 def read_positions(positions_txt):
 	# all positions are 0-based (Pythonic)
@@ -26,22 +30,22 @@ def read_positions(positions_txt):
 			positions[cols[0]].add(int(cols[1]) - 1)
 	return positions
 
-def init_array(refs):
+def init_array(refs, position_file):
 	#  1 2 3 4 5 ...
 	#A 0 0 0 0 0 ...
 	#C 0 0 0 0 0 ...
 	#G 0 0 0 0 0 ...
 	#T 0 0 0 0 0 ...
 	array = {}
-	positions = read_positions(sys.argv[2])
+	positions = read_positions(position_file)
 	for ref in positions.keys():
 		array[ref] = numpy.zeros((4, max(positions[ref]) + 1), dtype=int)
 	return array, positions
 
-def read_sam():
+def read_sam(position_file):
 	base_dict = {'A':0, 'C':1, 'G':2, 'T':3}
 	alignment = pysam.Samfile('-', 'r')
-	array, positions = init_array(alignment.references)
+	array, positions = init_array(alignment.references, position_file)
 	for line in alignment:
 		# ignore any unmapped reads
 		if line.is_unmapped:
@@ -63,8 +67,8 @@ def read_sam():
 							array[chrom][(base_dict[read_base], isec)] += 1
 	return array, positions
 
-def write_alleles(array, positions):
-	sample_name = sys.argv[1]
+def write_alleles(array, positions, sample_name):
+	
 	
 	frag = ''
 	chastity_list = []
@@ -118,16 +122,16 @@ def write_alleles(array, positions):
 			print 'CHASTITY WARNING: Mixed samples can severely affect accuracy of placement'
 
 	id = sample_name
-	with open(sys.argv[4], 'w') as file_out:
+	with open(output_file, 'w') as file_out:
 		print >>file_out, '>%s_new\n%s\n' %(id, frag),
 
 
 if __name__ == '__main__':
-	
-	array, positions = read_sam()
+	sample_name, position_file = get_args()
+	array, positions, output_file = read_sam(position_file)
 	# run('write_alleles(array, positions)', 'stats')
 	#stats = Stats('stats')
-	write_alleles(array, positions)
+	write_alleles(array, positions, sample_name, output_file)
 
 
 
