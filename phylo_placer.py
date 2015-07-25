@@ -23,8 +23,8 @@ def main():
     # # nargs = '+' means that fastqs will take mutliple files and return a list and return an error if not at least 1
 
     parser_place_me = subparsers.add_parser('place_me', help='Takes fastqs and a place me package, provides placement on tree.')
-    parser_place_me.add_argument('-1', dest='fastq1', help='first fastq file', required = True)
-    parser_place_me.add_argument('-2', dest='fastq2', help='second fastq file', default = None)
+    parser_place_me.add_argument('-1', dest='fastq1', help='first sequence file (if you give 1 seq file, assumes ONT)', required = True)
+    parser_place_me.add_argument('-2', dest='fastq2', help='second sequence file (if you give 2 seq files, assumes illumina)', default = None)
     parser_place_me.add_argument('-p', dest='place_me_package', required=True,
                                     help='The path to a place me package')
     parser_place_me.add_argument('-o', dest='output_dir', help='output directory - default to cwd', default = os.getcwd())
