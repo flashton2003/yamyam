@@ -19,9 +19,11 @@ class Package:
 				self.variant_fasta = os.path.join(path_to_package, f)
 			if f.endswith(('.tree', '.nwk')):
 				self.fasttree_tree = os.path.join(path_to_package, f)
-		if self.fasttree_tree == None:
-			name = os.splitext(self.variant_fasta)
-			os.system('fasttree -log {0}/{1}.log -gtr -nt {2} > {0}/{1}.tree'.format(path_to_package, name, self.variant_fasta))
-			self.fasttree_log = os.path.join(path_to_package, '%s.log' % name)
-			self.fasttree_tree = os.path.join(path_to_package, '%s.tree' % name)
+		if not hasattr(self, 'fasttree_tree'):
+			print self.variant_fasta
+			name = os.path.splitext(self.variant_fasta)[0]
+			print 'fasttree -log {0}.log -gtr -nt {1} > {0}.tree'.format(name, self.variant_fasta)
+			os.system('fasttree -log {0}.log -gtr -nt {1} > {0}.tree'.format(name, self.variant_fasta))
+			self.fasttree_log = '%s.log' % (name)
+			self.fasttree_tree = '%s.tree' % (name)
 
