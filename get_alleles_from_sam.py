@@ -127,8 +127,8 @@ def write_alleles(array, positions, sample_name):
 
 
 if __name__ == '__main__':
-	sample_name, position_file = get_args()
-	array, positions, output_file = read_sam(position_file)
+	sample_name, position_file, output_file = get_args()
+	array, positions = read_sam(position_file)
 	# run('write_alleles(array, positions)', 'stats')
 	#stats = Stats('stats')
 	write_alleles(array, positions, sample_name, output_file)
