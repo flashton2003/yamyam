@@ -10,7 +10,7 @@ def align_fastqs(args, package):
 
 def parse_sam(args, package):
 	this_dir = os.path.dirname(os.path.realpath(__file__))
-	os.system('cat {0}/{1}.sam | python {2}/get_alleles_from_sam.py {2} {3} {0}/{1}.var.fa'.format(args.output_dir, args.sample_name, this_dir, package.var_list))
+	os.system('cat {0}/{1}.sam | python {2}/get_alleles_from_sam.py {1} {3} {0}/{1}.var.fa'.format(args.output_dir, args.sample_name, this_dir, package.var_list))
 
 def run_taxit(args, package):
 	now = str(datetime.datetime.now())
