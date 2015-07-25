@@ -1,16 +1,16 @@
 import argparse
 import os
-from fastq_to_place import align_fastqs, parse_sam, run_taxit, run_pplacer
+from fastq_to_place import align_fastqs, parse_sam, run_taxit, run_pplacer, run_guppy
 from __init__ import __version__, Package
 
 def run_command(args):
     package = Package(args.place_me_package)
     args.sample_name = os.path.splitext(args.fastq1)[0]
     if args.command == 'place_me':
-        # align_fastqs(args, package)
-        # parse_sam(args, package)
+        align_fastqs(args, package)
+        parse_sam(args, package)
         run_taxit(args, package)
-	    run_pplacer(args, package)
+        run_pplacer(args, package)
         run_guppy(args, package)
 
 def main():
