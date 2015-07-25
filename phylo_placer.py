@@ -5,7 +5,10 @@ from __init__ import __version__, Package
 
 def run_command(args):
     package = Package(args.place_me_package)
+    print args.fastq1
     args.sample_name = os.path.splitext(args.fastq1)[0]
+    print args.sample_name
+    sys.exit()
     if args.command == 'place_me':
         align_fastqs(args, package)
         parse_sam(args, package)

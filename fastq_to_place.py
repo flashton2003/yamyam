@@ -10,7 +10,7 @@ def align_fastqs(args, package):
 
 def parse_sam(args, package):
 	this_dir = os.path.dirname(os.path.realpath(__file__))
-	os.system('cat {0}/{1}.sam | python {2}/get_alleles_from_sam.py {2} {3} {0}/{1}.fa'.format(args.output_dir, args.sample_name, this_dir, package.var_list))
+	os.system('cat {0}/{1}.sam | python {2}/get_alleles_from_sam.py {2} {3} {0}/{1}.var.fa'.format(args.output_dir, args.sample_name, this_dir, package.var_list))
 
 def run_taxit(args, package):
 	now = str(datetime.datetime.now())
@@ -18,7 +18,7 @@ def run_taxit(args, package):
 
 def run_pplacer(args, package):
 	add_one_in = os.path.splitext(package.variant_fasta.split('/')[-1])[0] + 'add_one_in'
-	os.system('cat {0}/{1}.fa {2} > {0}/taxit/{3}.fa'.format(args.output_dir, args.sample_name, package.variant_fasta, add_one_in))
+	os.system('cat {0}/{1}.var.fa {2} > {0}/taxit/{3}.fa'.format(args.output_dir, args.sample_name, package.variant_fasta, add_one_in))
 	os.system('pplacer -c {0}/taxit --out-dir {0}/taxit {0}/taxit/{1}.fa'.format(args.output_dir, add_one_in))
 
 def run_guppy(args, package):
