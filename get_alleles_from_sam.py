@@ -121,9 +121,8 @@ def write_alleles(array, positions, sample_name, output_file):
 		if mean_chastity < 90:
 			print 'CHASTITY WARNING: Mixed samples can severely affect accuracy of placement'
 
-	id = sample_name
 	with open(output_file, 'w') as file_out:
-		print >>file_out, '>%s_new\n%s\n' %(id, frag),
+		print >>file_out, '>%s_new\n%s\n' %(sample_name, frag),
 
 
 if __name__ == '__main__':
