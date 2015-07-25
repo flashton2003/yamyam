@@ -23,5 +23,5 @@ def run_pplacer(args, package):
 
 def run_guppy(args, package):
 	add_one_in = os.path.splitext(package.variant_fasta.split('/')[-1])[0] + 'add_one_in'
-	os.system('guppy tog {0}/taxit/{1}.jplace'.format(args.output_dir, add_one_in))
+	os.system('guppy tog --out-dir {0} {0}/taxit/{1}.jplace'.format(args.output_dir, add_one_in))
 	
