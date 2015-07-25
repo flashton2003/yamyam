@@ -9,7 +9,7 @@ def run_command(args):
     if args.command == 'place_me':
         if not os.path.exists(args.output_dir):
             os.mkdir(args.output_dir)
-        align_fastqs(args, package)
+        # align_fastqs(args, package)
         parse_sam(args, package)
         run_taxit(args, package)
         run_pplacer(args, package)
