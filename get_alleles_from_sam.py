@@ -67,7 +67,7 @@ def read_sam(position_file):
 							array[chrom][(base_dict[read_base], isec)] += 1
 	return array, positions
 
-def write_alleles(array, positions, sample_name):
+def write_alleles(array, positions, sample_name, output_file):
 	
 	
 	frag = ''
