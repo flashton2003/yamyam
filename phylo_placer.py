@@ -7,8 +7,8 @@ def run_command(args):
     package = Package(args.place_me_package)
     args.sample_name = os.path.splitext(args.fastq1)[0]
     if args.command == 'place_me':
-	if not os.path.exists(args.output_dir):
-		os.mkdir(args.output_dir)
+        if not os.path.exists(args.output_dir):
+            os.mkdir(args.output_dir)
         align_fastqs(args, package)
         parse_sam(args, package)
         run_taxit(args, package)

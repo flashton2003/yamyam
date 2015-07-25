@@ -2,6 +2,9 @@ import os
 import datetime
 
 def align_fastqs(args, package):
+	for x in ['amb', 'ann', 'bwt' 'pac', 'sa']:
+		if not os.path.exists('%s.%s' % (package.ref_genome, x)):
+			os.system('bwa index %s' % package.ref_genome)
 	if args.fastq2 != None:
 		os.system('bwa mem -t 4 {0} {1} {2} > {3}/{4}.sam'.format(package.ref_genome, args.fastq1, args.fastq2, args.output_dir, args.sample_name))
 	elif args.fastq2 == None:
